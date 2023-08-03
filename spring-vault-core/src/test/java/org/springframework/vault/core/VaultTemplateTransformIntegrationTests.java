@@ -77,8 +77,8 @@ class VaultTemplateTransformIntegrationTests extends IntegrationTestSupport {
 	@Test
 	void shouldEncode() {
 
-		VaultResponse response = this.vaultOperations.write("transform/encode/myrole", String.format(
-				"{\"value\": \"123-45-6789\", \"tweak\": \"%s\"}", Base64Utils.encodeToString("somenum".getBytes())));
+		VaultResponse response = this.vaultOperations.write("transform/encode/myrole", 
+                "{\"value\": \"123-45-6789\", \"tweak\": \"%s\"}".formatted(Base64Utils.encodeToString("somenum".getBytes())));
 
 		assertThat((String) response.getRequiredData().get("encoded_value")).isNotEmpty();
 	}
@@ -87,12 +87,12 @@ class VaultTemplateTransformIntegrationTests extends IntegrationTestSupport {
 	void shouldEncodeAndDecode() {
 
 		String value = "123-45-6789";
-		VaultResponse response = this.vaultOperations.write("transform/encode/myrole", String
-			.format("{\"value\": \"%s\", \"tweak\": \"%s\"}", value, Base64Utils.encodeToString("somenum".getBytes())));
+		VaultResponse response = this.vaultOperations.write("transform/encode/myrole", "{\"value\": \"%s\", \"tweak\": \"%s\"}"
+                .formatted(value, Base64Utils.encodeToString("somenum".getBytes())));
 
 		String encoded = (String) response.getRequiredData().get("encoded_value");
-		VaultResponse decoded = this.vaultOperations.write("transform/decode/myrole", String.format(
-				"{\"value\": \"%s\", \"tweak\": \"%s\"}", encoded, Base64Utils.encodeToString("somenum".getBytes())));
+		VaultResponse decoded = this.vaultOperations.write("transform/decode/myrole", 
+                "{\"value\": \"%s\", \"tweak\": \"%s\"}".formatted(encoded, Base64Utils.encodeToString("somenum".getBytes())));
 
 		assertThat((String) decoded.getRequiredData().get("decoded_value")).isEqualTo(value);
 	}

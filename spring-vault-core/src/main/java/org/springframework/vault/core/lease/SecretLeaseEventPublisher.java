@@ -230,7 +230,7 @@ public class SecretLeaseEventPublisher implements InitializingBean {
 		@Override
 		public void onLeaseError(SecretLeaseEvent leaseEvent, Exception exception) {
 			logger.warn(
-					String.format("[%s] %s %s", leaseEvent.getSource(), leaseEvent.getLease(), exception.getMessage()),
+                    "[%s] %s %s".formatted(leaseEvent.getSource(), leaseEvent.getLease(), exception.getMessage()),
 					exception);
 		}
 

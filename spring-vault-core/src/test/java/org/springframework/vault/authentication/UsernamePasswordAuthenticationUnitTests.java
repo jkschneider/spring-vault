@@ -69,8 +69,11 @@ class UsernamePasswordAuthenticationUnitTests {
 			.andExpect(jsonPath("$.password").value("heisenberg"))
 			.andExpect(jsonPath("$.totp").value("123456"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		VaultToken login = sut.login();
 

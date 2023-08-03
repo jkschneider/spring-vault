@@ -123,9 +123,9 @@ public class ReactiveVaultClients {
 		WebClient.Builder builder = WebClient.builder().exchangeStrategies(strategies).clientConnector(connector);
 
 		boolean simpleSource = false;
-		if (endpointProvider instanceof VaultEndpointProviderAdapter) {
+		if (endpointProvider instanceof VaultEndpointProviderAdapter adapter) {
 
-			if (((VaultEndpointProviderAdapter) endpointProvider).source instanceof SimpleVaultEndpointProvider) {
+			if (adapter.source instanceof SimpleVaultEndpointProvider) {
 				simpleSource = true;
 
 				UriBuilderFactory uriBuilderFactory = VaultClients

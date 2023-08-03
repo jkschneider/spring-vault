@@ -448,7 +448,7 @@ public class Versioned<T> {
 
 		@Override
 		public String toString() {
-			return String.format("Version[%d]", this.version);
+			return "Version[%d]".formatted(this.version);
 		}
 
 	}

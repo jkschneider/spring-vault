@@ -278,8 +278,8 @@ public class VaultTemplate implements InitializingBean, VaultOperations, Disposa
 	@Override
 	public void destroy() throws Exception {
 
-		if (this.dedicatedSessionManager && this.sessionManager instanceof DisposableBean) {
-			((DisposableBean) this.sessionManager).destroy();
+		if (this.dedicatedSessionManager && this.sessionManager instanceof DisposableBean bean) {
+			bean.destroy();
 		}
 	}
 
@@ -294,7 +294,7 @@ public class VaultTemplate implements InitializingBean, VaultOperations, Disposa
 		}
 
 		throw new UnsupportedOperationException(
-				String.format("Key/Value backend version %s not supported", apiVersion));
+                "Key/Value backend version %s not supported".formatted(apiVersion));
 
 	}
 
@@ -388,7 +388,7 @@ public class VaultTemplate implements InitializingBean, VaultOperations, Disposa
 
 		Assert.hasText(path, "Path must not be empty");
 
-		VaultListResponse read = doRead(String.format("%s?list=true", path.endsWith("/") ? path : (path + "/")),
+		VaultListResponse read = doRead("%s?list=true".formatted(path.endsWith("/") ? path : (path + "/")),
 				VaultListResponse.class);
 		if (read == null) {
 			return Collections.emptyList();

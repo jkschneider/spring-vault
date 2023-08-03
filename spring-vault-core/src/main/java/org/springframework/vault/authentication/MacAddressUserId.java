@@ -97,17 +97,17 @@ public class MacAddressUserId implements AppIdUserIdMechanism {
 				}
 			}
 
-			if (!networkInterface.isPresent()) {
+			if (networkInterface.isEmpty()) {
 
 				if (StringUtils.hasText(this.networkInterfaceHint)) {
-					this.logger.warn(String.format("Did not find a NetworkInterface applying hint %s",
-							this.networkInterfaceHint));
+					this.logger.warn("Did not find a NetworkInterface applying hint %s".formatted(
+                            this.networkInterfaceHint));
 				}
 
 				InetAddress localHost = InetAddress.getLocalHost();
 				networkInterface = Optional.ofNullable(NetworkInterface.getByInetAddress(localHost));
 
-				if (!networkInterface.filter(MacAddressUserId::hasNetworkAddress).isPresent()) {
+				if (networkInterface.filter(MacAddressUserId::hasNetworkAddress).isEmpty()) {
 					networkInterface = getNetworkInterfaceWithHardwareAddress(interfaces);
 				}
 			}
@@ -159,7 +159,7 @@ public class MacAddressUserId implements AppIdUserIdMechanism {
 			return Optional.ofNullable(it.getHardwareAddress());
 		}
 		catch (SocketException e) {
-			throw new IllegalStateException(String.format("Cannot determine hardware address for %s", it.getName()));
+			throw new IllegalStateException("Cannot determine hardware address for %s".formatted(it.getName()));
 		}
 	}
 
@@ -167,7 +167,7 @@ public class MacAddressUserId implements AppIdUserIdMechanism {
 
 		return getNetworkAddress(it) //
 			.orElseThrow(() -> new IllegalStateException(
-					String.format("Network interface %s has no hardware address", it.getName())));
+                "Network interface %s has no hardware address".formatted(it.getName())));
 	}
 
 	private static boolean hasNetworkAddress(NetworkInterface it) {

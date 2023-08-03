@@ -72,7 +72,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		Assert.hasText(keyName, "Key name must not be empty");
 
-		return this.reactiveVaultOperations.write(String.format("%s/keys/%s", this.path, keyName), null).then();
+		return this.reactiveVaultOperations.write("%s/keys/%s".formatted(this.path, keyName), null).then();
 	}
 
 	@Override
@@ -81,7 +81,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.hasText(keyName, "Key name must not be empty");
 		Assert.notNull(createKeyRequest, "VaultTransitKeyCreationRequest must not be empty");
 
-		return this.reactiveVaultOperations.write(String.format("%s/keys/%s", this.path, keyName), createKeyRequest)
+		return this.reactiveVaultOperations.write("%s/keys/%s".formatted(this.path, keyName), createKeyRequest)
 			.then();
 	}
 
@@ -90,7 +90,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		Assert.hasText(keyName, "Key name must not be empty");
 
-		return this.reactiveVaultOperations.write(String.format("%s/keys/%s/rotate", this.path, keyName), null).then();
+		return this.reactiveVaultOperations.write("%s/keys/%s/rotate".formatted(this.path, keyName), null).then();
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		request.put("plaintext", Base64.getEncoder().encodeToString(plaintext.getBytes()));
 
-		return this.reactiveVaultOperations.write(String.format("%s/encrypt/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/encrypt/%s".formatted(this.path, keyName), request)
 			.map(it -> (String) it.getRequiredData().get("ciphertext"));
 	}
 
@@ -114,7 +114,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.notNull(keyConfiguration, "VaultKeyConfiguration must not be empty");
 
 		return this.reactiveVaultOperations
-			.write(String.format("%s/keys/%s/config", this.path, keyName), keyConfiguration)
+			.write("%s/keys/%s/config".formatted(this.path, keyName), keyConfiguration)
 			.then();
 	}
 
@@ -123,13 +123,13 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		Assert.hasText(keyName, "Key name must not be empty");
 
-		return this.reactiveVaultOperations.delete(String.format("%s/keys/%s", this.path, keyName));
+		return this.reactiveVaultOperations.delete("%s/keys/%s".formatted(this.path, keyName));
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Flux<String> getKeys() {
-		return this.reactiveVaultOperations.read(String.format("%s/keys?list=true", this.path))
+		return this.reactiveVaultOperations.read("%s/keys?list=true".formatted(this.path))
 			.flatMapIterable(it -> (List<String>) it.getRequiredData().get("keys"));
 	}
 
@@ -146,7 +146,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		applyTransitOptions(transitContext, request);
 
-		return this.reactiveVaultOperations.write(String.format("%s/encrypt/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/encrypt/%s".formatted(this.path, keyName), request)
 			.map(it -> (String) it.getRequiredData().get("ciphertext"));
 	}
 
@@ -170,7 +170,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		request.put("ciphertext", ciphertext);
 
-		return this.reactiveVaultOperations.write(String.format("%s/decrypt/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/decrypt/%s".formatted(this.path, keyName), request)
 			.map(it -> (String) it.getRequiredData().get("plaintext"))
 			.map(plaintext -> new String(Base64.getDecoder().decode(plaintext)));
 	}
@@ -198,7 +198,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		applyTransitOptions(transitContext, request);
 
-		return this.reactiveVaultOperations.write(String.format("%s/decrypt/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/decrypt/%s".formatted(this.path, keyName), request)
 			.map(it -> (String) it.getRequiredData().get("plaintext"))
 			.map(Base64.getDecoder()::decode);
 	}
@@ -212,7 +212,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Map<String, String> request = new LinkedHashMap<>();
 		request.put("ciphertext", ciphertext);
 
-		return this.reactiveVaultOperations.write(String.format("%s/rewrap/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/rewrap/%s".formatted(this.path, keyName), request)
 			.map(response -> (String) response.getRequiredData().get("ciphertext"));
 	}
 
@@ -229,7 +229,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 
 		applyTransitOptions(transitContext, request);
 
-		return this.reactiveVaultOperations.write(String.format("%s/rewrap/%s", this.path, keyName), request)
+		return this.reactiveVaultOperations.write("%s/rewrap/%s".formatted(this.path, keyName), request)
 			.map(response -> (String) response.getRequiredData().get("ciphertext"));
 	}
 
@@ -245,7 +245,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 			return vaultRequest;
 		})
 			.collectList()
-			.flatMap(batch -> this.reactiveVaultOperations.write(String.format("%s/encrypt/%s", this.path, keyName),
+			.flatMap(batch -> this.reactiveVaultOperations.write("%s/encrypt/%s".formatted(this.path, keyName),
 					Collections.singletonMap("batch_input", batch)))
 			.flatMapIterable(vaultResponse -> toEncryptionResults(vaultResponse, batchRequest));
 	}
@@ -263,7 +263,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 			return vaultRequest;
 		})
 			.collectList()
-			.flatMap(batch -> this.reactiveVaultOperations.write(String.format("%s/decrypt/%s", this.path, keyName),
+			.flatMap(batch -> this.reactiveVaultOperations.write("%s/decrypt/%s".formatted(this.path, keyName),
 					Collections.singletonMap("batch_input", batch)))
 			.flatMapIterable(vaultResponse -> toDecryptionResults(vaultResponse, batchRequest));
 	}
@@ -286,7 +286,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.notNull(hmacRequest, "HMAC request must not be null");
 
 		return this.reactiveVaultOperations
-			.write(String.format("%s/hmac/%s", this.path, keyName), toRequestBody(hmacRequest))
+			.write("%s/hmac/%s".formatted(this.path, keyName), toRequestBody(hmacRequest))
 			.map(vaultResponse -> (String) vaultResponse.getRequiredData().get("hmac"))
 			.map(Hmac::of);
 	}
@@ -309,7 +309,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.notNull(signRequest, "Sign request must not be null");
 
 		return this.reactiveVaultOperations
-			.write(String.format("%s/sign/%s", this.path, keyName), toRequestBody(signRequest))
+			.write("%s/sign/%s".formatted(this.path, keyName), toRequestBody(signRequest))
 			.map(vaultResponse -> (String) vaultResponse.getRequiredData().get("signature"))
 			.map(Signature::of);
 	}
@@ -333,7 +333,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.notNull(verificationRequest, "Signature verification request must not be null");
 
 		return this.reactiveVaultOperations
-			.write(String.format("%s/verify/%s", this.path, keyName), toRequestBody(verificationRequest))
+			.write("%s/verify/%s".formatted(this.path, keyName), toRequestBody(verificationRequest))
 			.map(VaultResponse::getRequiredData)
 			.map(vaultResponse -> {
 				if (vaultResponse.containsKey("valid") && (Boolean) vaultResponse.get("valid")) {
@@ -350,7 +350,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.notNull(type, "Key type must not be null");
 
 		return this.reactiveVaultOperations
-			.read(String.format("%s/export/%s/%s", this.path, type.getValue(), keyName),
+			.read("%s/export/%s/%s".formatted(this.path, type.getValue(), keyName),
 					VaultTransitTemplate.RawTransitKeyImpl.class)
 			.flatMap(vaultResponse -> Mono.justOrEmpty(vaultResponse.getRequiredData()));
 	}
@@ -361,7 +361,7 @@ public class ReactiveVaultTransitTemplate implements ReactiveVaultTransitOperati
 		Assert.hasText(keyName, "Key name must not be empty");
 
 		return this.reactiveVaultOperations
-			.read(String.format("%s/keys/%s", this.path, keyName), VaultTransitKeyImpl.class)
+			.read("%s/keys/%s".formatted(this.path, keyName), VaultTransitKeyImpl.class)
 			.map(VaultResponseSupport::getRequiredData);
 	}
 

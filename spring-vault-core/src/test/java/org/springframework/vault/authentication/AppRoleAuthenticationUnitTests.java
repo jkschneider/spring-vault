@@ -149,8 +149,11 @@ class AppRoleAuthenticationUnitTests {
 			.andExpect(jsonPath("$.role_id").value("hello"))
 			.andExpect(jsonPath("$.secret_id").doesNotExist())
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"lease_duration\": 10, \"renewable\": true}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "lease_duration": 10, "renewable": true}\
+                        }\
+                        """));
 
 		AppRoleAuthentication sut = new AppRoleAuthentication(options, this.restTemplate);
 
@@ -185,10 +188,21 @@ class AppRoleAuthenticationUnitTests {
 			.unwrappingEndpoints(UnwrappingEndpoints.Cubbyhole)
 			.build();
 
-		String wrappedResponse = "{" + "  \"request_id\": \"aad6a19b-a42b-b750-cafb-51087662f53e\","
-				+ "  \"lease_id\": \"\"," + "  \"renewable\": false," + "  \"lease_duration\": 0," + "  \"data\": {"
-				+ "    \"secret_id\": \"my_secret_id\"," + "    \"secret_id_accessor\": \"my_secret_id_accessor\""
-				+ "  }," + "  \"wrap_info\": null," + "  \"warnings\": null," + "  \"auth\": null" + "}";
+		String wrappedResponse = """
+                {\
+                  "request_id": "aad6a19b-a42b-b750-cafb-51087662f53e",\
+                  "lease_id": "",\
+                  "renewable": false,\
+                  "lease_duration": 0,\
+                  "data": {\
+                    "secret_id": "my_secret_id",\
+                    "secret_id_accessor": "my_secret_id_accessor"\
+                  },\
+                  "wrap_info": null,\
+                  "warnings": null,\
+                  "auth": null\
+                }\
+                """;
 
 		// Expect a first request to unwrap the response
 		this.mockRest.expect(requestTo("/cubbyhole/response"))
@@ -203,8 +217,11 @@ class AppRoleAuthenticationUnitTests {
 			.andExpect(jsonPath("$.role_id").value("my_role_id"))
 			.andExpect(jsonPath("$.secret_id").value("my_secret_id"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"lease_duration\": 10, \"renewable\": true}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "lease_duration": 10, "renewable": true}\
+                        }\
+                        """));
 
 		AppRoleAuthentication auth = new AppRoleAuthentication(options, this.restTemplate);
 
@@ -224,10 +241,21 @@ class AppRoleAuthenticationUnitTests {
 			.secretId(SecretId.wrapped(VaultToken.of("unwrapping_token")))
 			.build();
 
-		String wrappedResponse = "{" + "  \"request_id\": \"aad6a19b-a42b-b750-cafb-51087662f53e\","
-				+ "  \"lease_id\": \"\"," + "  \"renewable\": false," + "  \"lease_duration\": 0," + "  \"data\": {"
-				+ "    \"secret_id\": \"my_secret_id\"," + "    \"secret_id_accessor\": \"my_secret_id_accessor\""
-				+ "  }," + "  \"wrap_info\": null," + "  \"warnings\": null," + "  \"auth\": null" + "}";
+		String wrappedResponse = """
+                {\
+                  "request_id": "aad6a19b-a42b-b750-cafb-51087662f53e",\
+                  "lease_id": "",\
+                  "renewable": false,\
+                  "lease_duration": 0,\
+                  "data": {\
+                    "secret_id": "my_secret_id",\
+                    "secret_id_accessor": "my_secret_id_accessor"\
+                  },\
+                  "wrap_info": null,\
+                  "warnings": null,\
+                  "auth": null\
+                }\
+                """;
 
 		// Expect a first request to unwrap the response
 		this.mockRest.expect(requestTo("/sys/wrapping/unwrap"))
@@ -241,8 +269,11 @@ class AppRoleAuthenticationUnitTests {
 			.andExpect(jsonPath("$.role_id").value("my_role_id"))
 			.andExpect(jsonPath("$.secret_id").value("my_secret_id"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"lease_duration\": 10, \"renewable\": true}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "lease_duration": 10, "renewable": true}\
+                        }\
+                        """));
 
 		AppRoleAuthentication auth = new AppRoleAuthentication(options, this.restTemplate);
 

@@ -313,7 +313,7 @@ public class VaultTokenRequest {
 			Assert.isTrue(ttl >= 0, "TTL must not be negative");
 			Assert.notNull(timeUnit, "TimeUnit must not be null");
 
-			this.ttl = String.format("%ss", timeUnit.toSeconds(ttl));
+			this.ttl = "%ss".formatted(timeUnit.toSeconds(ttl));
 			return this;
 		}
 
@@ -329,7 +329,7 @@ public class VaultTokenRequest {
 			Assert.notNull(ttl, "TTL must not be null");
 			Assert.isTrue(!ttl.isNegative(), "TTL must not be negative");
 
-			this.ttl = String.format("%ss", ttl.getSeconds());
+			this.ttl = "%ss".formatted(ttl.getSeconds());
 			return this;
 		}
 
@@ -347,7 +347,7 @@ public class VaultTokenRequest {
 			Assert.isTrue(explicitMaxTtl >= 0, "TTL must not be negative");
 			Assert.notNull(timeUnit, "TimeUnit must not be null");
 
-			this.explicitMaxTtl = String.format("%ss", timeUnit.toSeconds(explicitMaxTtl));
+			this.explicitMaxTtl = "%ss".formatted(timeUnit.toSeconds(explicitMaxTtl));
 			return this;
 		}
 
@@ -366,7 +366,7 @@ public class VaultTokenRequest {
 			Assert.notNull(explicitMaxTtl, "Explicit max TTL must not be null");
 			Assert.isTrue(!explicitMaxTtl.isNegative(), "TTL must not be negative");
 
-			this.explicitMaxTtl = String.format("%ss", explicitMaxTtl.getSeconds());
+			this.explicitMaxTtl = "%ss".formatted(explicitMaxTtl.getSeconds());
 			return this;
 		}
 

@@ -125,8 +125,10 @@ public class ClientHttpRequestFactoryFactory {
 		}
 
 		if (hasSslConfiguration(sslConfiguration)) {
-			logger.warn("VaultProperties has SSL configured but the SSL configuration "
-					+ "must be applied outside the Vault Client to use the JDK HTTP client");
+			logger.warn("""
+                    VaultProperties has SSL configured but the SSL configuration \
+                    must be applied outside the Vault Client to use the JDK HTTP client\
+                    """);
 		}
 
 		return new SimpleClientHttpRequestFactory();
@@ -216,7 +218,7 @@ public class ClientHttpRequestFactoryFactory {
 			throws IOException, GeneralSecurityException {
 
 		if (logger.isDebugEnabled()) {
-			logger.debug(String.format("Loading keystore from %s", keyStoreConfiguration.getResource()));
+			logger.debug("Loading keystore from %s".formatted(keyStoreConfiguration.getResource()));
 		}
 
 		InputStream inputStream = null;
@@ -233,7 +235,7 @@ public class ClientHttpRequestFactoryFactory {
 			}
 
 			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("Keystore loaded with %d entries", keyStore.size()));
+				logger.debug("Keystore loaded with %d entries".formatted(keyStore.size()));
 			}
 		}
 		finally {
@@ -253,7 +255,7 @@ public class ClientHttpRequestFactoryFactory {
 				String alias = cert.getSubjectX500Principal().getName();
 
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Adding certificate with alias %s", alias));
+					logger.debug("Adding certificate with alias %s".formatted(alias));
 				}
 
 				keyStore.setCertificateEntry(alias, cert);
@@ -428,10 +430,10 @@ public class ClientHttpRequestFactoryFactory {
 
 					KeyManager[] keyManagers = factory.getKeyManagers();
 
-					if (keyManagers.length == 1 && keyManagers[0] instanceof X509ExtendedKeyManager) {
+					if (keyManagers.length == 1 && keyManagers[0] instanceof X509ExtendedKeyManager manager) {
 
 						return new KeyManager[] { new KeySelectingX509KeyManager(
-								(X509ExtendedKeyManager) keyManagers[0], keyConfiguration) };
+								manager, keyConfiguration) };
 					}
 
 					return keyManagers;

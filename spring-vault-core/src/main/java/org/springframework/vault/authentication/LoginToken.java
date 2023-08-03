@@ -136,7 +136,7 @@ public class LoginToken extends VaultToken {
 	}
 
 	static boolean hasAccessor(VaultToken token) {
-		return token instanceof LoginToken && StringUtils.hasText(((LoginToken) token).getAccessor());
+		return token instanceof LoginToken lt && StringUtils.hasText(lt.getAccessor());
 	}
 
 	/**

@@ -127,7 +127,7 @@ class KeystoreUtil {
 
 		int counter = 0;
 		for (X509Certificate certificate : certificates) {
-			keyStore.setCertificateEntry(String.format("cert_%d", counter++), certificate);
+			keyStore.setCertificateEntry("cert_%d".formatted(counter++), certificate);
 		}
 
 		return keyStore;
@@ -173,8 +173,8 @@ class KeystoreUtil {
 		while (bis.available() > 0) {
 			java.security.cert.Certificate cert = cf.generateCertificate(bis);
 
-			if (cert instanceof X509Certificate) {
-				x509Certificates.add((X509Certificate) cert);
+			if (cert instanceof X509Certificate certificate) {
+				x509Certificates.add(certificate);
 			}
 		}
 

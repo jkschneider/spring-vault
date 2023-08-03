@@ -168,7 +168,7 @@ public class VaultSysTemplate implements VaultSysOperations {
 		Assert.hasText(path, "Path must not be empty");
 		Assert.notNull(vaultMount, "VaultMount must not be null");
 
-		this.vaultOperations.write(String.format("sys/mounts/%s", path), vaultMount);
+		this.vaultOperations.write("sys/mounts/%s".formatted(path), vaultMount);
 	}
 
 	@Override
@@ -181,7 +181,7 @@ public class VaultSysTemplate implements VaultSysOperations {
 
 		Assert.hasText(path, "Path must not be empty");
 
-		this.vaultOperations.delete(String.format("sys/mounts/%s", path));
+		this.vaultOperations.delete("sys/mounts/%s".formatted(path));
 	}
 
 	@Override
@@ -190,7 +190,7 @@ public class VaultSysTemplate implements VaultSysOperations {
 		Assert.hasText(path, "Path must not be empty");
 		Assert.notNull(vaultMount, "VaultMount must not be null");
 
-		this.vaultOperations.write(String.format("sys/auth/%s", path), vaultMount);
+		this.vaultOperations.write("sys/auth/%s".formatted(path), vaultMount);
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class VaultSysTemplate implements VaultSysOperations {
 
 		Assert.hasText(path, "Path must not be empty");
 
-		this.vaultOperations.delete(String.format("sys/auth/%s", path));
+		this.vaultOperations.delete("sys/auth/%s".formatted(path));
 	}
 
 	@Override
@@ -278,7 +278,7 @@ public class VaultSysTemplate implements VaultSysOperations {
 
 		Assert.hasText(name, "Name must not be null or empty");
 
-		this.vaultOperations.delete(String.format("sys/policy/%s", name));
+		this.vaultOperations.delete("sys/policy/%s".formatted(name));
 	}
 
 	@Override

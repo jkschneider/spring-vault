@@ -196,7 +196,7 @@ public class ReactiveLifecycleAwareSessionManager extends LifecycleAwareSessionM
 
 		if (LoginToken.hasAccessor(token)) {
 			this.logger.warn(
-					String.format("Cannot revoke VaultToken with accessor: %s", ((LoginToken) token).getAccessor()), e);
+                    "Cannot revoke VaultToken with accessor: %s".formatted(((LoginToken)token).getAccessor()), e);
 		}
 		else {
 			this.logger.warn("Cannot revoke VaultToken", e);
@@ -279,8 +279,8 @@ public class ReactiveLifecycleAwareSessionManager extends LifecycleAwareSessionM
 
 					Duration validTtlThreshold = getRefreshTrigger().getValidTtlThreshold(renewed);
 					this.logger
-						.info(String.format("Token TTL (%s) exceeded validity TTL threshold (%s). Dropping token.",
-								renewed.getLeaseDuration(), validTtlThreshold));
+						.info("Token TTL (%s) exceeded validity TTL threshold (%s). Dropping token.".formatted(
+                            renewed.getLeaseDuration(), validTtlThreshold));
 				}
 				else {
 					this.logger.info("Token TTL exceeded validity TTL threshold. Dropping token.");
@@ -338,7 +338,7 @@ public class ReactiveLifecycleAwareSessionManager extends LifecycleAwareSessionM
 
 			return loginTokenMono.onErrorResume(e -> {
 
-				this.logger.warn(String.format("Cannot enhance VaultToken to a LoginToken: %s", e.getMessage()));
+				this.logger.warn("Cannot enhance VaultToken to a LoginToken: %s".formatted(e.getMessage()));
 				dispatch(new AuthenticationErrorEvent(token, e));
 				return Mono.just(token);
 			}).map(it -> new TokenWrapper(it, false));
@@ -423,11 +423,9 @@ public class ReactiveLifecycleAwareSessionManager extends LifecycleAwareSessionM
 
 	private static String format(String message, RuntimeException e) {
 
-		if (e instanceof WebClientResponseException) {
-
-			WebClientResponseException wce = (WebClientResponseException) e;
-			return String.format("%s: Status %s %s %s", message, wce.getStatusCode().value(), wce.getStatusText(),
-					VaultResponses.getError(wce.getResponseBodyAsString()));
+		if (e instanceof WebClientResponseException wce) {
+			return "%s: Status %s %s %s".formatted(message, wce.getStatusCode().value(), wce.getStatusText(),
+                    VaultResponses.getError(wce.getResponseBodyAsString()));
 		}
 
 		return message;

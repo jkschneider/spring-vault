@@ -76,19 +76,31 @@ class VaultTransformTemplateIntegrationTests extends IntegrationTestSupport {
 		}
 
 		// Write a transformation/role
-		this.vaultOperations.write("transform/transformation/myssn", "{" + "\"type\": \"fpe\", "
-				+ "\"template\": \"builtin/socialsecuritynumber\", " + "\"allowed_roles\": [\"myrole\"]}");
+		this.vaultOperations.write("transform/transformation/myssn", """
+                {\
+                "type": "fpe", \
+                "template": "builtin/socialsecuritynumber", \
+                "allowed_roles": ["myrole"]}\
+                """);
 		this.vaultOperations.write("transform/role/myrole", "{\"transformations\": [\"myssn\", \"internalssn\"]}");
 
 		this.vaultOperations.write("transform/transformation/internalssn",
-				"{" + "\"type\": \"fpe\", " + "\"tweak_source\": \"internal\", "
-						+ "\"template\": \"builtin/socialsecuritynumber\", "
-						+ "\"allowed_roles\": [\"myrole\", \"internalrole\"]}");
+				"""
+                {\
+                "type": "fpe", \
+                "tweak_source": "internal", \
+                "template": "builtin/socialsecuritynumber", \
+                "allowed_roles": ["myrole", "internalrole"]}\
+                """);
 
 		this.vaultOperations.write("transform/transformation/generatedssn",
-				"{" + "\"type\": \"fpe\", " + "\"tweak_source\": \"generated\", "
-						+ "\"template\": \"builtin/socialsecuritynumber\", "
-						+ "\"allowed_roles\": [\"generatedrole\"]}");
+				"""
+                {\
+                "type": "fpe", \
+                "tweak_source": "generated", \
+                "template": "builtin/socialsecuritynumber", \
+                "allowed_roles": ["generatedrole"]}\
+                """);
 
 		this.vaultOperations.write("transform/role/internalrole", "{\"transformations\": [\"internalssn\"]}");
 		this.vaultOperations.write("transform/role/generatedrole", "{\"transformations\": [\"generatedssn\"]}");

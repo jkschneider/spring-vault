@@ -61,8 +61,11 @@ class ClientCertificateAuthenticationUnitTests {
 			.andExpect(method(HttpMethod.POST))
 			.andExpect(content().json("{\"name\": \"my-default-role\"}"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		ClientCertificateAuthenticationOptions options = ClientCertificateAuthenticationOptions.builder()
 			.role("my-default-role") //

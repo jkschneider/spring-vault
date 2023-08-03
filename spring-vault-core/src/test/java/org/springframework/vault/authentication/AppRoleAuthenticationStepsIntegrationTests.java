@@ -74,7 +74,7 @@ class AppRoleAuthenticationStepsIntegrationTests extends AppRoleAuthenticationIn
 	void authenticationStepsShouldAuthenticateWithWrappedRoleId() {
 
 		String secretId = (String) getVaultOperations()
-			.write(String.format("auth/approle/role/%s/secret-id", "with-secret-id"), null)
+			.write("auth/approle/role/%s/secret-id".formatted("with-secret-id"), null)
 			.getRequiredData()
 			.get("secret_id");
 
@@ -128,7 +128,7 @@ class AppRoleAuthenticationStepsIntegrationTests extends AppRoleAuthenticationIn
 	void authenticationStepsShouldAuthenticateWithPullRoleId() {
 
 		String secretId = (String) getVaultOperations()
-			.write(String.format("auth/approle/role/%s/secret-id", "with-secret-id"), null)
+			.write("auth/approle/role/%s/secret-id".formatted("with-secret-id"), null)
 			.getRequiredData()
 			.get("secret_id");
 

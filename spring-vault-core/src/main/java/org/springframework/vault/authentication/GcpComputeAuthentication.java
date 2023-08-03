@@ -52,8 +52,10 @@ import static org.springframework.vault.authentication.AuthenticationSteps.HttpR
 public class GcpComputeAuthentication extends GcpJwtAuthenticationSupport
 		implements ClientAuthentication, AuthenticationStepsFactory {
 
-	public static final String COMPUTE_METADATA_URL_TEMPLATE = "http://metadata/computeMetadata/v1/instance/service-accounts/{serviceAccount}/identity"
-			+ "?audience={audience}&format={format}";
+	public static final String COMPUTE_METADATA_URL_TEMPLATE = """
+            http://metadata/computeMetadata/v1/instance/service-accounts/{serviceAccount}/identity\
+            ?audience={audience}&format={format}\
+            """;
 
 	private final GcpComputeAuthenticationOptions options;
 
@@ -157,7 +159,7 @@ public class GcpComputeAuthentication extends GcpJwtAuthenticationSupport
 	}
 
 	private static String getAudience(String role) {
-		return String.format("https://localhost:8200/vault/%s", role);
+		return "https://localhost:8200/vault/%s".formatted(role);
 	}
 
 }

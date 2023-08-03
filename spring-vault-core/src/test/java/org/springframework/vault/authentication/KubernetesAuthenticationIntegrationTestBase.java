@@ -54,7 +54,7 @@ public abstract class KubernetesAuthenticationIntegrationTestBase extends Integr
 
 			String certificate = Files.contentOf(new File(workDir, "minikube/ca.crt"), StandardCharsets.US_ASCII);
 
-			String host = String.format("https://%s:8443", minikubeIp);
+			String host = "https://%s:8443".formatted(minikubeIp);
 
 			Map<String, String> kubeConfig = new HashMap<>();
 			kubeConfig.put("kubernetes_ca_cert", certificate);

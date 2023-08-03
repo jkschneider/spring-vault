@@ -94,7 +94,7 @@ public class VaultEndpoint implements Serializable {
 			vaultEndpoint.setPort(uri.getPort() == -1 ? uri.toURL().getDefaultPort() : uri.getPort());
 		}
 		catch (MalformedURLException e) {
-			throw new IllegalArgumentException(String.format("Can't retrieve default port from %s", uri), e);
+			throw new IllegalArgumentException("Can't retrieve default port from %s".formatted(uri), e);
 		}
 		vaultEndpoint.setScheme(uri.getScheme());
 
@@ -179,7 +179,7 @@ public class VaultEndpoint implements Serializable {
 	public void setPath(String path) {
 
 		Assert.hasText(path, "Path must not be null or empty");
-		Assert.isTrue(!path.startsWith("/"), () -> String.format("Path %s must not start with a leading slash", path));
+		Assert.isTrue(!path.startsWith("/"), () -> "Path %s must not start with a leading slash".formatted(path));
 
 		this.path = path;
 	}
@@ -202,7 +202,7 @@ public class VaultEndpoint implements Serializable {
 
 		Assert.hasText(path, "Path must not be empty");
 
-		return String.format("%s://%s:%s/%s/%s", getScheme(), getHost(), getPort(), getPath(), path);
+		return "%s://%s:%s/%s/%s".formatted(getScheme(), getHost(), getPort(), getPath(), path);
 	}
 
 	@Override
@@ -223,7 +223,7 @@ public class VaultEndpoint implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("%s://%s:%d", this.scheme, this.host, this.port);
+		return "%s://%s:%d".formatted(this.scheme, this.host, this.port);
 	}
 
 }

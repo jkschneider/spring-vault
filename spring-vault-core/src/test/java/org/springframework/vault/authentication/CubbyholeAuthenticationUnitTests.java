@@ -64,9 +64,12 @@ class CubbyholeAuthenticationUnitTests {
 	@Test
 	void shouldLoginUsingCubbyholeLogin() throws Exception {
 
-		String wrappedResponse = "{\"request_id\":\"058222ef-9ab9-ff39-f087-9d5bee64e46d\","
-				+ "\"auth\":{\"client_token\":\"5e6332cf-f003-6369-8cba-5bce2330f6cc\"," + "\"lease_duration\":0,"
-				+ "\"accessor\":\"46b6aebb-187f-932a-26d7-4f3d86a68319\"} }";
+		String wrappedResponse = """
+                {"request_id":"058222ef-9ab9-ff39-f087-9d5bee64e46d",\
+                "auth":{"client_token":"5e6332cf-f003-6369-8cba-5bce2330f6cc",\
+                "lease_duration":0,\
+                "accessor":"46b6aebb-187f-932a-26d7-4f3d86a68319"} }\
+                """;
 
 		this.mockRest.expect(requestTo("/cubbyhole/response"))
 			.andExpect(method(HttpMethod.GET))
@@ -95,9 +98,12 @@ class CubbyholeAuthenticationUnitTests {
 	@Test
 	void shouldLoginUsingWrappedLogin() {
 
-		String wrappedResponse = "{\"request_id\":\"058222ef-9ab9-ff39-f087-9d5bee64e46d\","
-				+ "\"auth\":{\"client_token\":\"5e6332cf-f003-6369-8cba-5bce2330f6cc\"," + "\"lease_duration\":0,"
-				+ "\"accessor\":\"46b6aebb-187f-932a-26d7-4f3d86a68319\"} }";
+		String wrappedResponse = """
+                {"request_id":"058222ef-9ab9-ff39-f087-9d5bee64e46d",\
+                "auth":{"client_token":"5e6332cf-f003-6369-8cba-5bce2330f6cc",\
+                "lease_duration":0,\
+                "accessor":"46b6aebb-187f-932a-26d7-4f3d86a68319"} }\
+                """;
 
 		this.mockRest.expect(requestTo("/sys/wrapping/unwrap"))
 			.andExpect(method(HttpMethod.POST))
@@ -125,9 +131,12 @@ class CubbyholeAuthenticationUnitTests {
 	@Test
 	void shouldLoginUsingWrappedLoginWithSelfLookup() {
 
-		String wrappedResponse = "{\"request_id\":\"058222ef-9ab9-ff39-f087-9d5bee64e46d\","
-				+ "\"auth\":{\"client_token\":\"5e6332cf-f003-6369-8cba-5bce2330f6cc\"," + "\"lease_duration\":10,"
-				+ "\"accessor\":\"46b6aebb-187f-932a-26d7-4f3d86a68319\"} }";
+		String wrappedResponse = """
+                {"request_id":"058222ef-9ab9-ff39-f087-9d5bee64e46d",\
+                "auth":{"client_token":"5e6332cf-f003-6369-8cba-5bce2330f6cc",\
+                "lease_duration":10,\
+                "accessor":"46b6aebb-187f-932a-26d7-4f3d86a68319"} }\
+                """;
 
 		this.mockRest.expect(requestTo("/sys/wrapping/unwrap"))
 			.andExpect(method(HttpMethod.POST))
@@ -138,8 +147,12 @@ class CubbyholeAuthenticationUnitTests {
 			.andExpect(method(HttpMethod.GET))
 			.andExpect(header(VaultHttpHeaders.VAULT_TOKEN, "5e6332cf-f003-6369-8cba-5bce2330f6cc"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{\"data\": {\n" + "    \"creation_ttl\": 600,\n" + "    \"renewable\": false,\n"
-						+ "    \"ttl\": 456} }"));
+				.body("""
+                        {"data": {
+                            "creation_ttl": 600,
+                            "renewable": false,
+                            "ttl": 456} }\
+                        """));
 
 		CubbyholeAuthenticationOptions options = CubbyholeAuthenticationOptions.builder()
 			.initialToken(VaultToken.of("hello"))
@@ -194,8 +207,12 @@ class CubbyholeAuthenticationUnitTests {
 			.andExpect(method(HttpMethod.GET))
 			.andExpect(header(VaultHttpHeaders.VAULT_TOKEN, "058222ef-9ab9-ff39-f087-9d5bee64e46d"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{\"data\": {\n" + "    \"creation_ttl\": 600,\n" + "    \"renewable\": true,\n"
-						+ "    \"ttl\": 456} }"));
+				.body("""
+                        {"data": {
+                            "creation_ttl": 600,
+                            "renewable": true,
+                            "ttl": 456} }\
+                        """));
 
 		CubbyholeAuthenticationOptions options = CubbyholeAuthenticationOptions.builder()
 			.initialToken(VaultToken.of("hello"))

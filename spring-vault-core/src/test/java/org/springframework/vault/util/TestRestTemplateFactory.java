@@ -90,18 +90,18 @@ public class TestRestTemplateFactory {
 
 		if (factoryCache.compareAndSet(null, clientHttpRequestFactory)) {
 
-			if (clientHttpRequestFactory instanceof InitializingBean) {
-				((InitializingBean) clientHttpRequestFactory).afterPropertiesSet();
+			if (clientHttpRequestFactory instanceof InitializingBean bean) {
+				bean.afterPropertiesSet();
 			}
 
-			if (clientHttpRequestFactory instanceof DisposableBean) {
+			if (clientHttpRequestFactory instanceof DisposableBean bean) {
 
 				Runtime.getRuntime().addShutdownHook(new Thread("ClientHttpRequestFactory Shutdown Hook") {
 
 					@Override
 					public void run() {
 						try {
-							((DisposableBean) clientHttpRequestFactory).destroy();
+							bean.destroy();
 						}
 						catch (Exception e) {
 							e.printStackTrace();

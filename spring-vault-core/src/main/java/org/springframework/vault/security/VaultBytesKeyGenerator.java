@@ -78,7 +78,7 @@ public class VaultBytesKeyGenerator implements BytesKeyGenerator {
 	public byte[] generateKey() {
 
 		VaultResponse response = this.vaultOperations.write(
-				String.format("%s/random/%d", this.transitPath, getKeyLength()),
+                "%s/random/%d".formatted(this.transitPath, getKeyLength()),
 				Collections.singletonMap("format", "base64"));
 
 		String randomBytes = (String) response.getRequiredData().get("random_bytes");

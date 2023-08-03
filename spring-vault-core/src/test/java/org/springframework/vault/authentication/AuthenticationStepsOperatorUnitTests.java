@@ -130,7 +130,11 @@ class AuthenticationStepsOperatorUnitTests {
 		MockClientHttpResponse response = new MockClientHttpResponse(HttpStatus.OK);
 		response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
 		response.setBody(
-				"{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}" + "}");
+				"""
+                {\
+                "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                }\
+                """);
 		ClientHttpConnector connector = (method, uri, fn) -> fn.apply(request).then(Mono.just(response));
 
 		WebClient webClient = WebClient.builder().clientConnector(connector).build();

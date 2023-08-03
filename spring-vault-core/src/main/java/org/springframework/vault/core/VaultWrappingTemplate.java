@@ -192,14 +192,14 @@ public class VaultWrappingTemplate implements VaultWrappingOperations {
 			creationTtl = wrapInfo.get("creation_ttl");
 		}
 
-		if (creationTtl instanceof String) {
-			creationTtl = Integer.parseInt((String) creationTtl);
+		if (creationTtl instanceof String string) {
+			creationTtl = Integer.parseInt(string);
 		}
 
 		Duration ttl = null;
 
-		if (creationTtl instanceof Integer) {
-			ttl = Duration.ofSeconds((Integer) creationTtl);
+		if (creationTtl instanceof Integer integer) {
+			ttl = Duration.ofSeconds(integer);
 
 		}
 		return ttl;

@@ -149,9 +149,16 @@ class AzureMsiAuthenticationUnitTests {
 			.andExpect(method(HttpMethod.GET))
 			.andExpect(header("Metadata", "true"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{\n" + "  \"compute\": {\n" + "   \"name\": \"vault-client\",\n"
-						+ "   \"vmScaleSetName\": \"\",\n" + "   \"resourceGroupName\": \"vault\",\n"
-						+ "   \"subscriptionId\": \"foobar-subscription\"\n" + "  }\n" + "}"));
+				.body("""
+                        {
+                          "compute": {
+                           "name": "vault-client",
+                           "vmScaleSetName": "",
+                           "resourceGroupName": "vault",
+                           "subscriptionId": "foobar-subscription"
+                          }
+                        }\
+                        """));
 	}
 
 	private void expectVmssMetadataRequest() {
@@ -160,10 +167,16 @@ class AzureMsiAuthenticationUnitTests {
 			.andExpect(method(HttpMethod.GET))
 			.andExpect(header("Metadata", "true"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{\n" + "  \"compute\": {\n" + "   \"name\": \"vault-client-scale-set_0\",\n"
-						+ "   \"vmScaleSetName\": \"vault-client-scale-set\",\n"
-						+ "   \"resourceGroupName\": \"vault\",\n" + "   \"subscriptionId\": \"foobar-subscription\"\n"
-						+ "  }\n" + "}"));
+				.body("""
+                        {
+                          "compute": {
+                           "name": "vault-client-scale-set_0",
+                           "vmScaleSetName": "vault-client-scale-set",
+                           "resourceGroupName": "vault",
+                           "subscriptionId": "foobar-subscription"
+                          }
+                        }\
+                        """));
 	}
 
 	private void expectIdentityTokenRequest() {

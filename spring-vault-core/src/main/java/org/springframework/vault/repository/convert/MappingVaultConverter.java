@@ -132,11 +132,11 @@ public class MappingVaultConverter extends AbstractVaultConverter {
 	private SecretDocument getSecretDocument(Object source) {
 
 		SecretDocument secretDocument = null;
-		if (source instanceof Map) {
-			secretDocument = new SecretDocument((Map) source);
+		if (source instanceof Map map) {
+			secretDocument = new SecretDocument(map);
 		}
-		else if (source instanceof SecretDocument) {
-			secretDocument = (SecretDocument) source;
+		else if (source instanceof SecretDocument document) {
+			secretDocument = document;
 		}
 		return secretDocument;
 	}
@@ -227,11 +227,11 @@ public class MappingVaultConverter extends AbstractVaultConverter {
 		if (this.conversions.hasCustomReadTarget(value.getClass(), rawType)) {
 			return (T) this.conversionService.convert(value, rawType);
 		}
-		else if (value instanceof List) {
-			return (T) readCollectionOrArray(type, (List) value);
+		else if (value instanceof List list) {
+			return (T) readCollectionOrArray(type, list);
 		}
-		else if (value instanceof Map) {
-			return (T) read(type, (Map) value);
+		else if (value instanceof Map map) {
+			return (T) read(type, map);
 		}
 		else {
 			return (T) getPotentiallyConvertedSimpleRead(value, rawType);
@@ -270,8 +270,8 @@ public class MappingVaultConverter extends AbstractVaultConverter {
 			if (obj instanceof Map) {
 				items.add(read(componentType, obj));
 			}
-			else if (obj instanceof List) {
-				items.add(readCollectionOrArray(TypeInformation.OBJECT, (List) obj));
+			else if (obj instanceof List list) {
+				items.add(readCollectionOrArray(TypeInformation.OBJECT, list));
 			}
 			else {
 				items.add(getPotentiallyConvertedSimpleRead(obj, rawComponentType));
@@ -318,11 +318,11 @@ public class MappingVaultConverter extends AbstractVaultConverter {
 			Object value = entry.getValue();
 			TypeInformation<?> defaultedValueType = valueType != null ? valueType : TypeInformation.OBJECT;
 
-			if (value instanceof Map) {
-				map.put(key, read(defaultedValueType, (Map) value));
+			if (value instanceof Map map1) {
+				map.put(key, read(defaultedValueType, map1));
 			}
-			else if (value instanceof List) {
-				map.put(key, readCollectionOrArray(valueType != null ? valueType : TypeInformation.LIST, (List) value));
+			else if (value instanceof List list) {
+				map.put(key, readCollectionOrArray(valueType != null ? valueType : TypeInformation.LIST, list));
 			}
 			else {
 				map.put(key, getPotentiallyConvertedSimpleRead(value, rawValueType));
@@ -669,8 +669,8 @@ public class MappingVaultConverter extends AbstractVaultConverter {
 	 */
 	private static Collection<?> asCollection(Object source) {
 
-		if (source instanceof Collection) {
-			return (Collection<?>) source;
+		if (source instanceof Collection collection) {
+			return collection;
 		}
 
 		return source.getClass().isArray() ? CollectionUtils.arrayToList(source) : Collections.singleton(source);

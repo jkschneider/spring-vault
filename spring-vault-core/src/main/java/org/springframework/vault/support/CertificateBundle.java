@@ -331,7 +331,7 @@ public class CertificateBundle extends Certificate {
 		}
 
 		throw new IllegalArgumentException(
-				String.format("Key type %s not supported. Supported types are: rsa, ec.", keyType));
+                "Key type %s not supported. Supported types are: rsa, ec.".formatted(keyType));
 	}
 
 }

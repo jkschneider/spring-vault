@@ -107,8 +107,11 @@ class AuthenticationStepsExecutorUnitTests {
 		this.mockRest.expect(requestTo("/auth/cert/login"))
 			.andExpect(method(HttpMethod.POST))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		AuthenticationSteps steps = AuthenticationSteps
 			.just(post("/auth/{path}/login", "cert").as(VaultResponse.class));
@@ -128,8 +131,10 @@ class AuthenticationStepsExecutorUnitTests {
 
 		assertThatExceptionOfType(VaultException.class).isThrownBy(() -> login(steps))
 			.withMessageContaining(
-					"HTTP request POST /auth/{path}/login AS class org.springframework.vault.support.VaultResponse "
-							+ "in state null failed with Status 400 and body foo");
+					"""
+                    HTTP request POST /auth/{path}/login AS class org.springframework.vault.support.VaultResponse \
+                    in state null failed with Status 400 and body foo\
+                    """);
 	}
 
 	@Test
@@ -143,8 +148,11 @@ class AuthenticationStepsExecutorUnitTests {
 			.andExpect(method(HttpMethod.POST))
 			.andExpect(content().string("foo-token"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"foo-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"foo-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		AuthenticationSteps steps = AuthenticationSteps
 			.fromHttpRequest(get(URI.create("somewhere/else")).as(String.class))
@@ -166,8 +174,11 @@ class AuthenticationStepsExecutorUnitTests {
 		this.mockRest.expect(requestTo("/auth/cert/login"))
 			.andExpect(content().string("foo"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"foo-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"foo-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("foo", "bar");

@@ -240,7 +240,7 @@ public class PcfAuthenticationOptions {
 			String value = System.getenv(name);
 
 			if (StringUtils.isEmpty(value)) {
-				throw new IllegalStateException(String.format("Environment variable %s not set", name));
+				throw new IllegalStateException("Environment variable %s not set".formatted(name));
 			}
 
 			return value;

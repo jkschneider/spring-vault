@@ -49,7 +49,7 @@ public abstract class UsernamePasswordAuthenticationIntegrationTestBase extends 
 		prepare().getVaultOperations().opsForSys().createOrUpdatePolicy(DEFAULT_USERPASS_AUTHENTICATION_PATH, POLICY);
 		prepare().getVaultOperations()
 			.doWithSession(restOperations -> restOperations.postForEntity(
-					String.format("auth/%s/users/%s", DEFAULT_USERPASS_AUTHENTICATION_PATH, username),
+                "auth/%s/users/%s".formatted(DEFAULT_USERPASS_AUTHENTICATION_PATH, username),
 					singletonMap("password", password), Map.class));
 	}
 

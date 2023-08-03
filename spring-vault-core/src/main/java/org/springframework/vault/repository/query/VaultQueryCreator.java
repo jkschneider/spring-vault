@@ -79,7 +79,7 @@ public class VaultQueryCreator extends AbstractQueryCreator<KeyValueQuery<VaultQ
 
 		if (propertyPath.getLeafProperty() != null && !propertyPath.getLeafProperty().isIdProperty()) {
 			throw new InvalidDataAccessApiUsageException(
-					String.format("Cannot create criteria for non-@Id property %s", propertyPath.getLeafProperty()));
+                    "Cannot create criteria for non-@Id property %s".formatted(propertyPath.getLeafProperty()));
 		}
 
 		VariableAccessor accessor = getVariableAccessor(part);
@@ -248,8 +248,8 @@ public class VaultQueryCreator extends AbstractQueryCreator<KeyValueQuery<VaultQ
 
 				Object next = iterator.next();
 
-				if (next instanceof Collection) {
-					return ((Collection<?>) next).toArray(new String[0]);
+				if (next instanceof Collection collection) {
+					return collection.toArray(new String[0]);
 				}
 				else if (next != null && next.getClass().isArray()) {
 					return (String[]) next;

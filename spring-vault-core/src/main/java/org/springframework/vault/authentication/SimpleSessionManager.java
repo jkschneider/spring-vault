@@ -53,11 +53,11 @@ public class SimpleSessionManager implements SessionManager {
 	@Override
 	public VaultToken getSessionToken() {
 
-		if (!this.token.isPresent()) {
+		if (this.token.isEmpty()) {
 
 			this.lock.lock();
 			try {
-				if (!this.token.isPresent()) {
+				if (this.token.isEmpty()) {
 					this.token = Optional.of(this.clientAuthentication.login());
 				}
 			}

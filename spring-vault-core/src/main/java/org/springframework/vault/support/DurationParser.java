@@ -56,7 +56,7 @@ public class DurationParser {
 		}
 
 		if (!VERIFY_PATTERN.matcher(duration.toLowerCase(Locale.ENGLISH)).matches()) {
-			throw new IllegalArgumentException(String.format("Cannot parse '%s' into a Duration", duration));
+			throw new IllegalArgumentException("Cannot parse '%s' into a Duration".formatted(duration));
 		}
 
 		Matcher matcher = PARSE_PATTERN.matcher(duration.toLowerCase(Locale.ENGLISH));

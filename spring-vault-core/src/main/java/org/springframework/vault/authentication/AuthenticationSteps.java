@@ -162,8 +162,8 @@ public class AuthenticationSteps {
 
 		PathAware current = pathAware;
 		do {
-			if (current instanceof Node<?>) {
-				steps.add((Node<?>) current);
+			if (current instanceof Node<?> node) {
+				steps.add(node);
 			}
 
 			if (current.getPrevious() instanceof PathAware) {
@@ -446,8 +446,8 @@ public class AuthenticationSteps {
 
 		@Override
 		public String toString() {
-			return String.format("%s %s AS %s", getMethod(), getUri() != null ? getUri() : getUriTemplate(),
-					getResponseType());
+			return "%s %s AS %s".formatted(getMethod(), getUri() != null ? getUri() : getUriTemplate(),
+                    getResponseType());
 		}
 
 		HttpMethod getMethod() {

@@ -177,7 +177,7 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 		catch (RuntimeException e) {
 			if (LoginToken.hasAccessor(token)) {
 				this.logger.warn(
-						String.format("Cannot revoke VaultToken with accessor: %s", ((LoginToken) token).getAccessor()),
+                        "Cannot revoke VaultToken with accessor: %s".formatted(((LoginToken)token).getAccessor()),
 						e);
 			}
 			else {
@@ -204,7 +204,7 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 		this.logger.info("Renewing token");
 
 		Optional<TokenWrapper> token = getToken();
-		if (!token.isPresent()) {
+		if (token.isEmpty()) {
 			getSessionToken();
 			return RenewOutcome.TERMINAL_ERROR;
 		}
@@ -246,8 +246,8 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 
 			if (this.logger.isDebugEnabled()) {
 				Duration validTtlThreshold = getRefreshTrigger().getValidTtlThreshold(renewed);
-				this.logger.info(String.format("Token TTL (%s) exceeded validity TTL threshold (%s). Dropping token.",
-						renewed.getLeaseDuration(), validTtlThreshold));
+				this.logger.info("Token TTL (%s) exceeded validity TTL threshold (%s). Dropping token.".formatted(
+                        renewed.getLeaseDuration(), validTtlThreshold));
 			}
 			else {
 				this.logger.info("Token TTL exceeded validity TTL threshold. Dropping token.");
@@ -267,11 +267,11 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 	@Override
 	public VaultToken getSessionToken() {
 
-		if (!getToken().isPresent()) {
+		if (getToken().isEmpty()) {
 
 			this.lock.lock();
 			try {
-				if (!getToken().isPresent()) {
+				if (getToken().isEmpty()) {
 					doGetSessionToken();
 				}
 			}
@@ -304,7 +304,7 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 				wrapper = new TokenWrapper(token, false);
 			}
 			catch (VaultTokenLookupException e) {
-				this.logger.warn(String.format("Cannot enhance VaultToken to a LoginToken: %s", e.getMessage()));
+				this.logger.warn("Cannot enhance VaultToken to a LoginToken: %s".formatted(e.getMessage()));
 				dispatch(new AuthenticationErrorEvent(token, e));
 			}
 		}
@@ -340,7 +340,7 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 		Runnable task = () -> {
 			Optional<TokenWrapper> tokenWrapper = getToken();
 
-			if (!tokenWrapper.isPresent()) {
+			if (tokenWrapper.isEmpty()) {
 				return;
 			}
 
@@ -372,11 +372,9 @@ public class LifecycleAwareSessionManager extends LifecycleAwareSessionManagerSu
 
 	private static String format(String message, RuntimeException e) {
 
-		if (e instanceof HttpStatusCodeException) {
-
-			HttpStatusCodeException hsce = (HttpStatusCodeException) e;
-			return String.format("%s: Status %s %s %s", message, hsce.getStatusCode().value(), hsce.getStatusText(),
-					VaultResponses.getError(hsce.getResponseBodyAsString()));
+		if (e instanceof HttpStatusCodeException hsce) {
+			return "%s: Status %s %s %s".formatted(message, hsce.getStatusCode().value(), hsce.getStatusText(),
+                    VaultResponses.getError(hsce.getResponseBodyAsString()));
 		}
 
 		return message;

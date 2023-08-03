@@ -121,8 +121,11 @@ class GcpIamCredentialsAuthenticationUnitTests {
 			.andExpect(jsonPath("$.role").value("dev-role"))
 			.andExpect(jsonPath("$.jwt").value("my-jwt"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		PrivateKey privateKeyMock = mock(PrivateKey.class);
 		ServiceAccountCredentials credential = (ServiceAccountCredentials) ServiceAccountCredentials.newBuilder()

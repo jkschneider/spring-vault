@@ -267,7 +267,7 @@ public class ReactiveVaultTemplate implements ReactiveVaultOperations {
 
 		Assert.hasText(path, "Path must not be empty");
 
-		Mono<VaultListResponse> read = doRead(String.format("%s?list=true", path.endsWith("/") ? path : (path + "/")),
+		Mono<VaultListResponse> read = doRead("%s?list=true".formatted(path.endsWith("/") ? path : (path + "/")),
 				VaultListResponse.class);
 
 		return read.filter(response -> response.getData() != null && response.getData().containsKey("keys"))

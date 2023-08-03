@@ -82,11 +82,11 @@ class JwtAuthenticationIntegrationTest extends IntegrationTestSupport {
 	}
 
 	private String encodePublicKey() {
-		return String.format("""
+		return """
 				-----BEGIN PUBLIC KEY-----
 				%s
 				-----END PUBLIC KEY-----
-				""", Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()));
+				""".formatted(Base64.getEncoder().encodeToString(keyPair.getPublic().getEncoded()));
 	}
 
 	private String createToken(String user) throws JOSEException {

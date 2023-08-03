@@ -112,8 +112,8 @@ public abstract class JsonMapFlattener {
 	private static void flattenElement(String propertyPrefix, @Nullable Object source, Map<String, ?> resultMap,
 			Function<Object, Object> valueTransformer) {
 
-		if (source instanceof Iterable) {
-			flattenCollection(propertyPrefix, (Iterable<Object>) source, resultMap, valueTransformer);
+		if (source instanceof Iterable iterable) {
+			flattenCollection(propertyPrefix, iterable, resultMap, valueTransformer);
 			return;
 		}
 

@@ -297,16 +297,16 @@ public abstract class AbstractVaultConfiguration implements ApplicationContextAw
 
 		@Override
 		public void destroy() throws Exception {
-			if (this.clientHttpRequestFactory instanceof DisposableBean) {
-				((DisposableBean) this.clientHttpRequestFactory).destroy();
+			if (this.clientHttpRequestFactory instanceof DisposableBean bean) {
+				bean.destroy();
 			}
 		}
 
 		@Override
 		public void afterPropertiesSet() throws Exception {
 
-			if (this.clientHttpRequestFactory instanceof InitializingBean) {
-				((InitializingBean) this.clientHttpRequestFactory).afterPropertiesSet();
+			if (this.clientHttpRequestFactory instanceof InitializingBean bean) {
+				bean.afterPropertiesSet();
 			}
 		}
 

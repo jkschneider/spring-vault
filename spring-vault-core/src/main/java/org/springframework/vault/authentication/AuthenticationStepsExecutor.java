@@ -77,19 +77,17 @@ public class AuthenticationStepsExecutor implements ClientAuthentication {
 
 		Object state = evaluate(steps);
 
-		if (state instanceof VaultToken) {
-			return (VaultToken) state;
+		if (state instanceof VaultToken token) {
+			return token;
 		}
 
-		if (state instanceof VaultResponse) {
-
-			VaultResponse response = (VaultResponse) state;
+		if (state instanceof VaultResponse response) {
 			Assert.state(response.getAuth() != null, "Auth field must not be null");
 			return LoginTokenUtil.from(response.getAuth());
 		}
 
 		throw new IllegalStateException(
-				String.format("Cannot retrieve VaultToken from authentication chain. Got instead %s", state));
+                "Cannot retrieve VaultToken from authentication chain. Got instead %s".formatted(state));
 	}
 
 	@SuppressWarnings({ "unchecked", "ConstantConditions" })
@@ -100,24 +98,24 @@ public class AuthenticationStepsExecutor implements ClientAuthentication {
 		for (Node<?> o : steps) {
 
 			if (logger.isDebugEnabled()) {
-				logger.debug(String.format("Executing %s with current state %s", o, state));
+				logger.debug("Executing %s with current state %s".formatted(o, state));
 			}
 
 			try {
-				if (o instanceof HttpRequestNode) {
-					state = doHttpRequest((HttpRequestNode<Object>) o, state);
+				if (o instanceof HttpRequestNode node) {
+					state = doHttpRequest(node, state);
 				}
 
-				if (o instanceof MapStep) {
-					state = doMapStep((MapStep<Object, Object>) o, state);
+				if (o instanceof MapStep step) {
+					state = doMapStep(step, state);
 				}
 
-				if (o instanceof ZipStep) {
-					state = doZipStep((ZipStep<Object, Object>) o, state);
+				if (o instanceof ZipStep step) {
+					state = doZipStep(step, state);
 				}
 
-				if (o instanceof OnNextStep) {
-					state = doOnNext((OnNextStep<Object>) o, state);
+				if (o instanceof OnNextStep step) {
+					state = doOnNext(step, state);
 				}
 
 				if (o instanceof ScalarValueStep<?>) {
@@ -129,17 +127,17 @@ public class AuthenticationStepsExecutor implements ClientAuthentication {
 				}
 
 				if (logger.isDebugEnabled()) {
-					logger.debug(String.format("Executed %s with current state %s", o, state));
+					logger.debug("Executed %s with current state %s".formatted(o, state));
 				}
 			}
 			catch (HttpStatusCodeException e) {
 				throw new VaultLoginException(
-						String.format("HTTP request %s in state %s failed with Status %s and body %s", o, state,
-								e.getStatusCode().value(), VaultResponses.getError(e.getResponseBodyAsString())),
+                        "HTTP request %s in state %s failed with Status %s and body %s".formatted(o, state,
+                                e.getStatusCode().value(), VaultResponses.getError(e.getResponseBodyAsString())),
 						e);
 			}
 			catch (RuntimeException e) {
-				throw new VaultLoginException(String.format("Authentication execution failed in %s", o), e);
+				throw new VaultLoginException("Authentication execution failed in %s".formatted(o), e);
 			}
 		}
 		return state;

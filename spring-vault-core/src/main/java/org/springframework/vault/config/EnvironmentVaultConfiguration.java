@@ -282,8 +282,8 @@ public class EnvironmentVaultConfiguration extends AbstractVaultConfiguration im
 			case KUBERNETES:
 				return kubeAuthentication();
 			default:
-				throw new IllegalStateException(String.format("Vault authentication method %s is not supported with %s",
-						authenticationMethod, getClass().getSimpleName()));
+				throw new IllegalStateException("Vault authentication method %s is not supported with %s".formatted(
+                        authenticationMethod, getClass().getSimpleName()));
 		}
 	}
 
@@ -362,8 +362,10 @@ public class EnvironmentVaultConfiguration extends AbstractVaultConfiguration im
 				"Vault AWS-EC2 authentication: Role (vault.aws-ec2.role) must not be empty");
 
 		if (StringUtils.hasText(roleId) && StringUtils.hasText(role)) {
-			throw new IllegalStateException("AWS-EC2 Authentication: Only one of Role (vault.aws-ec2.role) or"
-					+ " RoleId (deprecated, vault.aws-ec2.roleId) must be provided");
+			throw new IllegalStateException("""
+                    AWS-EC2 Authentication: Only one of Role (vault.aws-ec2.role) or\
+                     RoleId (deprecated, vault.aws-ec2.roleId) must be provided\
+                    """);
 		}
 
 		if (StringUtils.hasText(roleId)) {

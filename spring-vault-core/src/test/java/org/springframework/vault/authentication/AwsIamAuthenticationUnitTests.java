@@ -65,8 +65,11 @@ class AwsIamAuthenticationUnitTests {
 			.andExpect(jsonPath("$.iam_request_headers").exists())
 			.andExpect(jsonPath("$.role").value("foo-role"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		AwsIamAuthenticationOptions options = AwsIamAuthenticationOptions.builder()
 			.role("foo-role")
@@ -94,8 +97,11 @@ class AwsIamAuthenticationUnitTests {
 			.andExpect(jsonPath("$.iam_request_headers").exists())
 			.andExpect(jsonPath("$.role").value("foo-role"))
 			.andRespond(withSuccess().contentType(MediaType.APPLICATION_JSON)
-				.body("{" + "\"auth\":{\"client_token\":\"my-token\", \"renewable\": true, \"lease_duration\": 10}"
-						+ "}"));
+				.body("""
+                        {\
+                        "auth":{"client_token":"my-token", "renewable": true, "lease_duration": 10}\
+                        }\
+                        """));
 
 		AwsIamAuthenticationOptions options = AwsIamAuthenticationOptions.builder()
 			.role("foo-role")
